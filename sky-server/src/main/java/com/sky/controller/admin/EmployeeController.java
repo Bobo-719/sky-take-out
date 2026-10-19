@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.resource.ResourceUrlProvider;
 
+import javax.imageio.event.IIOReadUpdateListener;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -96,4 +97,29 @@ public class EmployeeController {
         return Result.success(pageResult);
     }
 
+    //启用禁用员工账号
+    @PostMapping("/status/{status}")
+    @ApiOperation("启用禁用员工账号")
+    public Result startOrStop(@PathVariable Integer status,Long id){
+        log.info("启用禁用员工账号:{},{}",status,id);
+        employeeService.startOrStop(status,id);
+        return Result.success();
+    }
+
+
+    //修改员工信息
+    @GetMapping("/{id}")
+    @ApiOperation("根据ID查询员工信息")
+    public Result<Employee> getById(@PathVariable Long id){
+        Employee employee = employeeService.getById(id);
+        return Result.success(employee);
+    }
+
+    @PutMapping
+    @ApiOperation("编辑员工信息")
+    public Result update(@RequestBody EmployeeDTO employeeDto){
+        log.info("编辑员工信息：{}",employeeDto);
+        employeeService.update(employeeDto);
+        return Result.success();
+    }
 }
